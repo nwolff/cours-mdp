@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% block head %}
+    <title>{% block title %}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/static/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/static/favicon.ico" rel="icon" type="image/x-icon">
+    {% endblock %}
+</head>
+
+<body>
+    <div id="content" class="container">{% block content %}{% endblock %}</div>
+</body>
+
+</html>

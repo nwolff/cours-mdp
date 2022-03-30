@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}User Info{% endblock %}
+
+{% block content %}
+<h1>User</h1>
+<dl>
+  <dt>username</dt>
+  <dd>{{user.username}}</dd>
+  <dt>password</dt>
+  <dd>{{user.password}}</dd>
+  <dt>strategy</dt>
+  <dd>{{user.strategy}}</dd>
+  <dt>created</dt>
+  <dd>{{user.created}}</dd>
+</dl>
+{% endblock %}

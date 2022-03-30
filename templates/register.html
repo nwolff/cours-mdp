@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<h1>Please register</h1>
+<br>
+<form action="" method="post">
+  <input type="text" placeholder="Username" name="username" value="{{
+          request.form.username }}">
+  <br>
+  <input type="password" placeholder="Password" name="password" value="{{
+          request.form.password }}">
+  <br>
+  <select name="strategy_name">
+    {% for s in strategies %}
+    <option value="{{s.name}}">{{s.name}}</option>
+    {% endfor %}
+  </select>
+  <br>
+  <input class="btn btn-default" type="submit" value="Register">
+</form>
+{% if error %}
+<p class="error"><strong>Error:</strong> {{ error }}</p>
+{% endif %}
+{% endblock %}
