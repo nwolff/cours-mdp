@@ -1,56 +1,44 @@
 from dataclasses import dataclass
-from strategies import registry as strategy_registry
-from google.cloud import datastore
-import datetime
-
-client = datastore.Client()
+import json
+from replit import db
 
 
 @dataclass
 class User:
-    created: datetime.datetime
     username: str
     password: str
     strategy: str
 
 
-def _user_entity_to_object(e):
+def load_users():
+    return [_to_object(k, v) for k, v in db.items()]
+
+
+def create_user(username, encoded_password, strategy_name):
+    if username in db:
+        raise Exception(f"user with name {username} already exists")
+    j = json.dumps({"password": encoded_password, "strategy": strategy_name})
+    db[username] = j
+    return _to_object(username, j)
+
+
+def user_for_name(username):
+    j = db.get(username)
+    if j:
+        return _to_object(username, j)
+    else:
+        return None
+
+
+def _to_object(username, j):
+    e = json.loads(j)
     return User(
-        created=e["created"],
+        username=username,
         strategy=e["strategy"],
-        username=e["username"],
         password=e["password"],
     )
 
 
-def load_users():
-    query = client.query(kind="User")
-    query.order = ["-created"]
-    return [_user_entity_to_object(e) for e in query.fetch()]
-
-
-def create_user(strategy, username, password):
-    new_user = datastore.Entity(client.key("User"))
-    new_user.update(
-        {
-            "created": datetime.datetime.utcnow(),
-            "username": username,
-            "password": strategy.encode_password(password),
-            "strategy": strategy.name,
-        }
-    )
-    client.put(new_user)
-    return _user_entity_to_object(new_user)
-
-
-def user_for_credentials(username, password):
-    query = client.query(kind="User")
-    query.add_filter("username", "=", username)
-    result = list(query.fetch())
-    if not result:
-        return False
-    for user in result:
-        strategy = strategy_registry[user["strategy"]]
-        if strategy.is_valid_password(password, user["password"]):
-            return _user_entity_to_object(user)
-    return False
+def _delete_all():
+    for k in db.keys():
+        del db[k]

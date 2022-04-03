@@ -1,6 +1,6 @@
-def encode_password(p):
-    return p
+def encode(password):
+    return password
 
 
-def is_valid_password(p, stored):
-    return p == stored
+def matches(password, stored_password):
+    return password == stored_password
