@@ -14,9 +14,7 @@ def load_users():
     return [_to_object(k, v) for k, v in db.items()]
 
 
-def create_user(username, encoded_password, strategy_name):
-    if username in db:
-        raise Exception(f"user with name {username} already exists")
+def create_or_update_user(username, encoded_password, strategy_name):
     j = json.dumps({"password": encoded_password, "strategy": strategy_name})
     db[username] = j
     return _to_object(username, j)

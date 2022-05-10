@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 from strategies import registry
-from storage import load_users, create_user, user_for_name
+from storage import load_users, create_or_update_user, user_for_name
 from flask import Flask, request, render_template
 
 app = Flask(__name__)
@@ -38,7 +38,7 @@ def register():
     error = None
     if request.method == "POST":
         strategy = registry[request.form["strategy_name"]]
-        user = create_user(request.form["username"],
+        user = create_or_update_user(request.form["username"],
                            strategy.encode(request.form["password"]),
                            strategy_name=strategy.name)
         return render_template("userinfo.html", user=user)
