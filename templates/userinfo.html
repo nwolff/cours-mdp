@@ -1,14 +1,14 @@
 {% extends "base.html" %}
-{% block title %}User Info{% endblock %}
+{% block title %}Infos compte{% endblock %}
 
 {% block content %}
-<h1>User</h1>
+<h1>Compte</h1>
 <dl>
-  <dt>username</dt>
+  <dt>Nom</dt>
   <dd>{{user.username}}</dd>
-  <dt>password</dt>
+  <dt>Mot de passe</dt>
   <dd>{{user.password}}</dd>
-  <dt>strategy</dt>
+  <dt>Stratégie</dt>
   <dd>{{user.strategy}}</dd>
 </dl>
 {% endblock %}

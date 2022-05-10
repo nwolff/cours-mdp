@@ -1,14 +1,18 @@
 {% extends "base.html" %}
-{% block title %}Users{% endblock %}
+{% block title %}Comptes{% endblock %}
 
 {% block content %}
-<h1>Users</h1>
-<table>
+<h1>Comptes</h1>
+<table class="table">
+<table class="table">
+	<thead>
     <tr>
-        <th>username</th>
-        <th>password</th>
-        <th>strategy</th>
+        <th>Nom</th>
+        <th>Mot de passe</th>
+        <th>Stratégie</th>
     </tr>
+	</thead>
+	<tbody>
     {% for user in users %}
     <tr>
         <td>{{user.username}}</td>
@@ -16,5 +20,6 @@
         <td>{{user.strategy}}</td>
     </tr>
     {% endfor %}
+	</tbody>
 </table>
 {% endblock %}

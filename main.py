@@ -27,9 +27,9 @@ def login():
             if strategy.matches(request.form["password"], user.password):
                 return render_template("userinfo.html", user=user)
             else:
-                error = "Invalid password"
+                error = "Mot de passe incorrect"
         else:
-            error = "Invalid username"
+            error = "Utilisateur inconnu"
     return render_template("login.html", error=error)
 
 

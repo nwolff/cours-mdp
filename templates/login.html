@@ -1,19 +1,26 @@
 {% extends "base.html" %}
-{% block title %}Login{% endblock %}
+{% block title %}Se connecter{% endblock %}
 
 {% block content %}
-<h1>Please login</h1>
+<h1>Se connecter</h1>
 <br>
 <form action="" method="post">
-  <input type="text" placeholder="Username" name="username" value="{{
+	<div class="form-group">
+  <input type="text" placeholder="Nom" name="username" value="{{
           request.form.username }}">
-  <br>
-  <input type="password" placeholder="Password" name="password" value="{{
+		  </div>
+	  <div class="form-group">
+  <input type="password" placeholder="Mot de passe" name="password" value="{{
           request.form.password }}">
-  <br>
-  <input class="btn btn-default" type="submit" value="Login">
+	  </div>
+  <button type="submit" class="btn btn-primary">
+	  Se connecter
+  </button>
 </form>
 {% if error %}
-<p class="error"><strong>Error:</strong> {{ error }}</p>
+<br>
+<div class="alert alert-danger" role="alert">
+	{{ error }}
+</div>
 {% endif %}
 {% endblock %}
