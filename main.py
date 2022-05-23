@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 from strategies import registry
-from storage import load_users, create_or_update_user, user_for_name
-from flask import Flask, request, render_template
+from storage import load_users, create_or_update_user, user_for_name, _delete_all
+from flask import Flask, request, render_template, redirect
 
 app = Flask(__name__)
 app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 600
@@ -10,6 +10,12 @@ app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 600
 @app.route("/")
 def home():
     return render_template("home.html")
+
+
+@app.route("/_delete")
+def deleteusers():
+    _delete_all()
+    return redirect("/listusers")
 
 
 @app.route("/listusers")
@@ -39,8 +45,8 @@ def register():
     if request.method == "POST":
         strategy = registry[request.form["strategy_name"]]
         user = create_or_update_user(request.form["username"],
-                           strategy.encode(request.form["password"]),
-                           strategy_name=strategy.name)
+                                     strategy.encode(request.form["password"]),
+                                     strategy_name=strategy.name)
         return render_template("userinfo.html", user=user)
     return render_template("register.html",
                            error=error,
