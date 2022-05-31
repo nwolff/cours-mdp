@@ -44,13 +44,13 @@ def register():
     error = None
     if request.method == "POST":
         strategy = registry[request.form["strategy_name"]]
-        user = create_or_update_user(request.form["username"],
-                                     strategy.encode(request.form["password"]),
-                                     strategy_name=strategy.name)
+        user = create_or_update_user(
+            request.form["username"],
+            strategy.encode(request.form["password"]),
+            strategy_name=strategy.name,
+        )
         return render_template("userinfo.html", user=user)
-    return render_template("register.html",
-                           error=error,
-                           strategies=registry.values())
+    return render_template("register.html", error=error, strategies=registry.values())
 
 
 if __name__ == "__main__":
