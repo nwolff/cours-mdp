@@ -1,4 +1,4 @@
-from . import User
+from . import User, iso_timestamp
 
 _users = {}
 
@@ -9,7 +9,10 @@ def load_users():
 
 def create_or_update_user(username, encoded_password, strategy_name):
     new_user = User(
-        username=username, password=encoded_password, strategy=strategy_name
+        timestamp=iso_timestamp(),
+        username=username,
+        password=encoded_password,
+        strategy=strategy_name,
     )
     _users[username] = new_user
     return new_user

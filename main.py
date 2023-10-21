@@ -67,8 +67,8 @@ if __name__ == "__main__":
     parser.add_argument("-d", "--debug", action="store_true")
     args = parser.parse_args()
     if args.debug:
-        print("Using fake storage")
-        import storage.fake as storage
+        print("Using sqlite storage")
+        import storage.sqlite as storage
     else:
         import storage.replitdb as storage
 
