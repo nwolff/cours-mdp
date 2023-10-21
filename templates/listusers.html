@@ -5,10 +5,10 @@
 
 {% block content %}
 <h1>Comptes</h1>
-<table class="table">
     <table class="table">
         <thead>
             <tr>
+                <th>Date</th>
                 <th>Nom</th>
                 <th>Mot de passe encodé</th>
                 <th>Stratégie</th>
@@ -17,6 +17,7 @@
         <tbody>
             {% for user in users %}
             <tr>
+                <td>{{user.timestamp}}</td>
                 <td>{{user.username}}</td>
                 <td>{{user.password}}</td>
                 <td>{{user.strategy}}</td>
