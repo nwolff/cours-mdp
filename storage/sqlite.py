@@ -5,6 +5,8 @@ from . import User, iso_timestamp
 
 DB_PATH = "accounts.db"
 
+print(f"Using sqlite database: {DB_PATH}")
+
 with sqlite3.connect(DB_PATH) as con:
     con.execute(
         "CREATE TABLE IF NOT EXISTS users"
