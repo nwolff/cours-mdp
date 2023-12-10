@@ -1,12 +1,11 @@
 #!/usr/bin/env python
 
-import argparse
-
 from flask import Flask, redirect, render_template, request
 
+import storage.firestore as storage
 from strategies import registry
 
-MIN_CHARS = 3
+MIN_CHARS = 3  # Both for the username and password
 
 app = Flask(__name__)
 app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 600
@@ -50,7 +49,7 @@ def register():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
-        if min(len(username), len(password)) >= 3:
+        if min(len(username), len(password)) >= MIN_CHARS:
             strategy_name = request.form["strategy_name"]
             strategy = registry[strategy_name]
             user = storage.create_or_update_user(
@@ -58,18 +57,10 @@ def register():
             )
             return render_template("userinfo.html", user=user)
         else:
-            error = f"Minimum {MIN_CHARS} caractères"
+            error = f"Le nom et mot de passe doivent avoir au minimum {MIN_CHARS} caractères"
     return render_template("register.html", error=error, strategies=registry)
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-d", "--debug", action="store_true")
-    args = parser.parse_args()
-    if args.debug:
-        print("Using sqlite storage")
-        import storage.sqlite as storage
-    else:
-        import storage.replitdb as storage
-
-    app.run(host="0.0.0.0", port=8080, debug=args.debug)
+    # Only when developing
+    app.run(host="0.0.0.0", port=8080, debug=True)

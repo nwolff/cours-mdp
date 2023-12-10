@@ -8,6 +8,8 @@
 
 # Always
 __pycache__/
+.mypy_cache/
+.ruff_cache/
 
 # IDEs
 .vscode/

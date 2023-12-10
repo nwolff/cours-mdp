@@ -1,1 +1,4 @@
-flask
+Flask
+gunicorn
+google-cloud-firestore
+
