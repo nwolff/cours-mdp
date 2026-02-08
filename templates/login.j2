@@ -1,0 +1,31 @@
+{% extends "base.j2" %}
+
+{% block title %}Se connecter{% endblock %}
+
+{% block nav_login %}active{% endblock %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center">
+  <div class="card p-4 shadow" style="width: 100%; max-width: 380px">
+    <div class="card-body">
+      <h3 class="card-title text-center mb-4">Se connecter</h3>
+      {% if error %}
+      <div class="alert alert-danger" role="alert">{{ error }}</div>
+      {% endif %}
+      <form action="" method="post">
+        <div class="mb-3">
+          <input type="text" placeholder="Nom" name="username" value="{{
+          request.form.username }}" class="form-control" required minlength="{{min_chars}}" />
+        </div>
+        <div class="mb-3">
+          <input type="password" placeholder="Mot de passe" name="password" value="{{
+          request.form.password }}" class="form-control" required minlength="{{min_chars}}" />
+        </div>
+        <div class="d-grid">
+          <button type="submit" class="btn btn-primary">Se connecter</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

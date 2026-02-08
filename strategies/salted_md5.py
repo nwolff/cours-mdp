@@ -2,16 +2,16 @@ import hashlib
 import os
 
 
-def encode(password):
+def encode(password: str) -> str:
     salt = os.urandom(3).hex()
-    hash = _hash(salt, password)
+    hash = hash_with_salt(password, salt)
     return f"{salt}${hash}"
 
 
-def matches(password, stored_password):
-    salt, stored_hash = stored_password.split("$")
-    return _hash(salt, password) == stored_hash
+def matches(password: str, stored_password: str) -> bool:
+    salt, stored_hash = stored_password.split("$", 1)
+    return hash_with_salt(password, salt) == stored_hash
 
 
-def _hash(salt, password):
-    return hashlib.md5(f"{salt}{password}".encode("utf-8")).hexdigest()
+def hash_with_salt(password: str, salt: str) -> str:
+    return hashlib.md5(f"{salt}{password}".encode()).hexdigest()

@@ -1,6 +1,10 @@
 ## Application stockage de mot de passe
 
-https://cours-mdp-nmv77fs62a-oa.a.run.app/
+https://mdp.nwolff.info/
+
+Est un alias pour :
+
+https://cours-mdp-5563464620.europe-west1.run.app/
 
 ## Outils
 

@@ -1,4 +1,0 @@
-Flask
-gunicorn
-google-cloud-firestore
-

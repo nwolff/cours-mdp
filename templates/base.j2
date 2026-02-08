@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  {% block head %}
+  <title>{% block title %}{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="/static/bootstrap.min.css" rel="stylesheet" media="screen" />
+  <link href="/static/favicon.ico" rel="icon" type="image/x-icon" />
+  {% block extrahead %}{% endblock %} {% endblock %}
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <div class="container-fluid">
+      <ul class="navbar-nav">
+        <a class="nav-item nav-link mx-2 {% block nav_register %}{% endblock %}" href="register">Créer un compte</a>
+        <a class="nav-item nav-link mx-2 {% block nav_login %}{% endblock %}" href="login">Se connecter</a>
+        <a class="nav-item nav-link mx-2 {% block nav_listusers %}{% endblock %}" href="listusers">Liste des comptes</a>
+      </ul>
+    </div>
+  </nav>
+
+  <div id="content" class="container pt-5">
+    {% block content %}{% endblock %}
+  </div>
+</body>
+
+</html>

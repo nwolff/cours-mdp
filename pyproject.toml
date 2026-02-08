@@ -1,41 +1,17 @@
-[tool.ruff.lint]
-extend-select = [
-    "F",
-    "E",
-    "N",
-    "C90",
-    "I",
-    "W",
-    "UP",
-    "PLR",
-    "B",
-    "SIM",
-    "ANN",
-    "BLE",
-    "S",
-    "A",
-    "C4",
-    "EXE",
-    "ICN",
-    "LOG",
-    "G",
-    "PIE",
-    "RSE",
-    "RET",
-    "TCH",
-    "ARG",
-    "PL",
-    "FLY",
-    "RUF",
-    # "PD",
+[project]
+name = "cours-mdp"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "flask>=3.1.2",
+    "google-cloud-firestore>=2.23.0",
+    "gunicorn>=25.0.3",
 ]
-extend-ignore = [
-    "E501",
-    "PLR0911",
-    "SIM108",
-    "ANN201",
-    "C408",
-    "S113",
-    "RET504",
-    "ANN001",
+
+[dependency-groups]
+dev = [
+    "mypy>=1.19.1",
+    "ruff>=0.15.0",
 ]

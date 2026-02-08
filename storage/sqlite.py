@@ -1,5 +1,6 @@
 import sqlite3
 from dataclasses import asdict
+from typing import Any
 
 from . import User, iso_timestamp
 
@@ -22,12 +23,14 @@ with sqlite3.connect(DB_PATH) as con:
 SEL = "SELECT timestamp, username, password, strategy FROM users"
 
 
-def load_users():
+def load_users() -> list[User]:
     with sqlite3.connect(DB_PATH) as con:
         return [_row_to_user(row) for row in con.execute(SEL)]
 
 
-def create_or_update_user(username, encoded_password, strategy_name):
+def create_or_update_user(
+    username: str, encoded_password: str, strategy_name: str
+) -> User:
     new_user = User(
         timestamp=iso_timestamp(),
         username=username,
@@ -45,19 +48,16 @@ def create_or_update_user(username, encoded_password, strategy_name):
     return new_user
 
 
-def delete_all():
+def delete_all() -> None:
     with sqlite3.connect(DB_PATH) as con:
         con.execute("DELETE from users")
 
 
-def user_for_name(username):
+def user_for_name(username: str) -> User | None:
     with sqlite3.connect(DB_PATH) as con:
         row = con.execute(SEL + " WHERE username=?", (username,)).fetchone()
-    if row:
-        return _row_to_user(row)
-    else:
-        return None
+    return _row_to_user(row) if row else None
 
 
-def _row_to_user(row):
+def _row_to_user(row: list[Any]) -> User:
     return User(timestamp=row[0], username=row[1], password=row[2], strategy=row[3])
