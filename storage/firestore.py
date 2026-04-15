@@ -3,7 +3,7 @@ from google.cloud import firestore_v1
 from . import User, iso_timestamp
 
 print("Connecting to firestore...")
-users = firestore_v1.Client().collection("users")
+users = firestore_v1.Client(database="cours-mdp").collection("users")
 print("Done")
 
 

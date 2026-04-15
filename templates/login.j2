@@ -4,6 +4,18 @@
 
 {% block nav_login %}active{% endblock %}
 
+{% block extrahead %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.querySelector('form');
+  const btn = form.querySelector('[type=submit]');
+  const check = () => btn.disabled = !form.checkValidity();
+  check();
+  form.addEventListener('input', check);
+});
+</script>
+{% endblock %}
+
 {% block content %}
 <div class="container d-flex justify-content-center align-items-center">
   <div class="card p-4 shadow" style="width: 100%; max-width: 380px">
@@ -16,10 +28,12 @@
         <div class="mb-3">
           <input type="text" placeholder="Nom" name="username" value="{{
           request.form.username }}" class="form-control" required minlength="{{min_chars}}" />
+          <div class="form-text">Minimum {{min_chars}} caractères</div>
         </div>
         <div class="mb-3">
           <input type="password" placeholder="Mot de passe" name="password" value="{{
           request.form.password }}" class="form-control" required minlength="{{min_chars}}" />
+          <div class="form-text">Minimum {{min_chars}} caractères</div>
         </div>
         <div class="d-grid">
           <button type="submit" class="btn btn-primary">Se connecter</button>

@@ -2,9 +2,22 @@
 {% block title %}Créer un compte{% endblock %}
 {% block nav_register %}active{% endblock %}
 
+{% block extrahead %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.querySelector('form');
+  const btn = form.querySelector('[type=submit]');
+  const check = () => btn.disabled = !form.checkValidity();
+  check();
+  form.addEventListener('input', check);
+  form.addEventListener('change', check);
+});
+</script>
+{% endblock %}
+
 {% block content %}
 <div class="container d-flex justify-content-center align-items-center">
-  <div class="card p-4 shadow" style="width: 100%; max-width: 380px">
+  <div class="card p-4 shadow" style="width: 100%; max-width: 500px">
     <div class="card-body">
       <h3 class="card-title text-center mb-4">Créer un compte</h3>
       {% if error %}
@@ -14,19 +27,21 @@
         <div class="mb-3">
           <input type="text" placeholder="Nom" name="username" value="{{
           request.form.username }}" class="form-control" required minlength="{{min_chars}}" />
+          <div class="form-text">Minimum {{min_chars}} caractères</div>
         </div>
         <div class="mb-3">
           <input type="password" placeholder="Mot de passe" name="password" value="{{
           request.form.password }}" class="form-control" required minlength="{{min_chars}}" />
+          <div class="form-text">Minimum {{min_chars}} caractères</div>
         </div>
         <div class="mb-3">
-          <label>Stratégie</label>
-          <select class="form-control" name="strategy_name" required>
-            <option disabled selected value> -- Choisir une option -- </option>
+          <label class="form-label d-block">Stratégie</label>
+          <div class="d-flex flex-wrap gap-2" role="group">
             {% for s_name in strategies.keys() %}
-            <option value="{{s_name}}">{{s_name}}</option>
+            <input type="radio" class="btn-check" name="strategy_name" id="strategy_{{loop.index}}" value="{{s_name}}" autocomplete="off" required>
+            <label class="btn btn-outline-secondary" for="strategy_{{loop.index}}">{{s_name}}</label>
             {% endfor %}
-          </select>
+          </div>
         </div>
         <div class="d-grid">
           <button type="submit" class="btn btn-primary">Créer</button>
