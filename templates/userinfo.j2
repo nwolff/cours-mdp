@@ -3,15 +3,24 @@
 {% block title %}Infos compte{% endblock %}
 
 {% block content %}
-<h1>Votre compte</h1>
-<dl>
-  <dt>Nom</dt>
-  <dd>{{user.username}}</dd>
-  <dt>Mot de passe encodé</dt>
-  <dd>{{user.password}}</dd>
-  <dt>Stratégie</dt>
-  <dd>{{user.strategy}}</dd>
-  <dt>Date de création</dt>
-  <dd>{{user.timestamp|format_timestamp}}</dd>
-</dl>
+<div class="card shadow mx-auto" style="max-width: 520px">
+  <div class="card-body text-center p-4">
+    <img src="{{ user.username|avatar_url }}"
+         alt="Avatar de {{user.username}}"
+         class="rounded-circle border bg-light mb-3"
+         width="180" height="180" />
+    <h2 class="card-title mb-1">{{user.username}}</h2>
+    <p class="fst-italic mb-1">« {{user.username|totem}} »</p>
+    <p class="text-muted small mb-4">Compte créé le {{user.timestamp|format_timestamp}}</p>
+    <dl class="row text-start mb-0">
+      <dt class="col-sm-5">Stratégie</dt>
+      <dd class="col-sm-7">{{user.strategy}}</dd>
+      <dt class="col-sm-5">Mot de passe encodé</dt>
+      <dd class="col-sm-7"><code class="text-break">{{user.password}}</code></dd>
+    </dl>
+  </div>
+</div>
+<p class="text-center mt-3">
+  <a href="/" class="btn btn-link">Retour à l'accueil</a>
+</p>
 {% endblock %}

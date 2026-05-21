@@ -1,3 +1,4 @@
+import hashlib
 import queue
 import threading
 from datetime import datetime
@@ -15,6 +16,7 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 
 import storage.firestore as storage
 from strategies import registry
+from totem import totem
 
 MIN_CHARS = 3  # Both for the username and password
 
@@ -37,6 +39,15 @@ def format_timestamp(iso_str):
         return datetime.fromisoformat(iso_str).strftime("%Y-%m-%d %H:%M:%S")
     except (ValueError, TypeError):
         return iso_str
+
+
+@app.template_filter("avatar_url")
+def avatar_url(username):
+    h = hashlib.md5(username.encode("utf-8")).hexdigest()
+    return f"https://api.dicebear.com/9.x/bottts/svg?seed={h}"
+
+
+app.add_template_filter(totem, "totem")
 
 
 @app.context_processor
