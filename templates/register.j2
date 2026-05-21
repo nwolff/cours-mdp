@@ -25,23 +25,29 @@ document.addEventListener('DOMContentLoaded', () => {
       {% endif %}
       <form action="" method="post">
         <div class="mb-3">
-          <input type="text" placeholder="Nom" name="username" value="{{
-          request.form.username }}" class="form-control" required minlength="{{min_chars}}" />
+          <div class="form-floating">
+            <input type="text" id="username" placeholder="Nom" name="username" value="{{
+            request.form.username }}" class="form-control" required minlength="{{min_chars}}" autofocus />
+            <label for="username">Nom</label>
+          </div>
           <div class="form-text">Minimum {{min_chars}} caractères</div>
         </div>
         <div class="mb-3">
-          <input type="password" placeholder="Mot de passe" name="password" value="{{
-          request.form.password }}" class="form-control" required minlength="{{min_chars}}" />
+          <div class="form-floating">
+            <input type="password" id="password" placeholder="Mot de passe" name="password" class="form-control" required minlength="{{min_chars}}" />
+            <label for="password">Mot de passe</label>
+          </div>
           <div class="form-text">Minimum {{min_chars}} caractères</div>
         </div>
         <div class="mb-3">
           <label class="form-label d-block">Stratégie</label>
           <div class="d-flex flex-wrap gap-2" role="group">
             {% for s_name in strategies.keys() %}
-            <input type="radio" class="btn-check" name="strategy_name" id="strategy_{{loop.index}}" value="{{s_name}}" autocomplete="off" required>
+            <input type="radio" class="btn-check" name="strategy_name" id="strategy_{{loop.index}}" value="{{s_name}}" autocomplete="off" required {% if request.form.strategy_name == s_name %}checked{% endif %}>
             <label class="btn btn-outline-secondary" for="strategy_{{loop.index}}">{{s_name}}</label>
             {% endfor %}
           </div>
+          <div class="form-text">Choisir une stratégie</div>
         </div>
         <div class="d-grid">
           <button type="submit" class="btn btn-primary">Créer</button>

@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <td>{{user.username}}</td>
         <td>{{user.password}}</td>
         <td>{{user.strategy}}</td>
-        <td>{{user.timestamp}}</td>
+        <td>{{user.timestamp|format_timestamp}}</td>
       </tr>
       {% endfor %}
     </tbody>

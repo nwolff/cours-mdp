@@ -8,6 +8,24 @@ https://cours-mdp-5563464620.europe-west1.run.app/
 
 # Developing Locally
 
+The project uses [uv](https://docs.astral.sh/uv/) to manage Python and dependencies.
+
+## Install dependencies
+
+    uv sync
+
+This creates `.venv/` and installs runtime + dev dependencies pinned in `uv.lock`.
+
+## Run the app
+
+    uv run python main.py
+
+Then open <http://localhost:8080/>. The Flask dev server reloads on file changes.
+
+## Run the tests
+
+    uv run pytest
+
 ## Database
 
 Either import storage.sqlite instead of storage.firestore

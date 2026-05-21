@@ -10,14 +10,17 @@
     "knative",
     "listusers",
     "md5decrypt",
+    "minlength",
     "mypy",
     "nwolff",
     "pluralize",
     "pwned",
     "pyproject",
+    "pytest",
     "ruff",
     "segno",
     "userinfo",
+    "venv",
     "werkzeug"
   ]
 }

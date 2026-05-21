@@ -1,5 +1,6 @@
 import queue
 import threading
+from datetime import datetime
 
 import segno
 from flask import (
@@ -26,7 +27,16 @@ app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)
 
 @app.template_filter("pluralize")
 def pluralize(number, singular="", plural="s"):
-    return singular if number == 1 else plural
+    # French rule: singular for 0 and 1, plural for 2+.
+    return singular if number <= 1 else plural
+
+
+@app.template_filter("format_timestamp")
+def format_timestamp(iso_str):
+    try:
+        return datetime.fromisoformat(iso_str).strftime("%Y-%m-%d %H:%M:%S")
+    except (ValueError, TypeError):
+        return iso_str
 
 
 @app.context_processor
