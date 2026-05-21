@@ -51,11 +51,12 @@ document.addEventListener('DOMContentLoaded', () => {
       {% if error %}
       <div class="alert alert-danger" role="alert">{{ error }}</div>
       {% endif %}
-      <form action="" method="post">
+      <form action="" method="post" autocomplete="off">
         <div class="mb-3">
           <div class="form-floating">
             <input type="text" id="username" placeholder="Nom" name="username" value="{{
-            request.form.username }}" class="form-control" required minlength="{{min_chars}}" autofocus />
+            request.form.username }}" class="form-control" required minlength="{{min_chars}}" autofocus
+            autocapitalize="off" autocorrect="off" spellcheck="false" />
             <label for="username">Nom</label>
           </div>
           <div class="form-text">Minimum {{min_chars}} caractères</div>
