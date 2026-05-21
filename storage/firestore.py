@@ -1,3 +1,5 @@
+from typing import Callable
+
 from google.cloud import firestore_v1
 
 from . import User, iso_timestamp
@@ -9,6 +11,24 @@ print("Done")
 
 def load_users() -> list[User]:
     return [_document_to_user(doc) for doc in users.stream()]
+
+
+def subscribe_to_changes(callback: Callable[[], None]):
+    """Invoke `callback` whenever the users collection changes.
+
+    Skips the very first snapshot, which Firestore delivers immediately after
+    subscribing and would otherwise trigger a spurious notification.
+    """
+    seen_first = False
+
+    def _on_snapshot(col_snapshot, changes, read_time):
+        nonlocal seen_first
+        if not seen_first:
+            seen_first = True
+            return
+        callback()
+
+    return users.on_snapshot(_on_snapshot)
 
 
 def user_for_name(username: str) -> User | None:

@@ -1,6 +1,6 @@
 import sqlite3
 from dataclasses import asdict
-from typing import Any
+from typing import Any, Callable
 
 from . import User, iso_timestamp
 
@@ -57,6 +57,11 @@ def user_for_name(username: str) -> User | None:
     with sqlite3.connect(DB_PATH) as con:
         row = con.execute(SEL + " WHERE username=?", (username,)).fetchone()
     return _row_to_user(row) if row else None
+
+
+def subscribe_to_changes(callback: Callable[[], None]) -> None:
+    # sqlite has no change-notification mechanism here — clients won't auto-refresh.
+    return None
 
 
 def _row_to_user(row: list[Any]) -> User:

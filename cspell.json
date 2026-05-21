@@ -1,0 +1,23 @@
+{
+  "version": "0.2",
+  "language": "en,fr",
+  "words": [
+    "deleteusers",
+    "firestore",
+    "gunicorn",
+    "haveibeenpwned",
+    "keepalive",
+    "knative",
+    "listusers",
+    "md5decrypt",
+    "mypy",
+    "nwolff",
+    "pluralize",
+    "pwned",
+    "pyproject",
+    "ruff",
+    "segno",
+    "userinfo",
+    "werkzeug"
+  ]
+}

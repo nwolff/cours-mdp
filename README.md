@@ -1,4 +1,4 @@
-## Application stockage de mot de passe
+# Application stockage de mot de passe
 
 https://mdp.nwolff.info/
 
@@ -6,14 +6,36 @@ Est un alias pour :
 
 https://cours-mdp-5563464620.europe-west1.run.app/
 
-## Outils
+# Developing Locally
 
-Rot13 interactif : https://cryptii.com/pipes/rot13
+## Database
 
-MD5 decrypt : https://md5decrypt.net/
+Either import storage.sqlite instead of storage.firestore
 
-Have I been pwned : https://haveibeenpwned.com/
+Or configure credentials on your local machine to connect to firestore :
 
-## Pour aller plus loin
+    gcloud config set project cours-mdp-407714
+    gcloud auth application-default login
 
-MD5 : https://fr.wikipedia.org/wiki/MD5
+Ref: https://cloud.google.com/docs/authentication/provide-credentials-adc#local-dev
+
+## Tooling
+
+To edit templates in vs-code:
+
+- install better-jinja
+- configure "associations" settings, .j2 should be mapped to jinja-html
+
+# In production
+
+## Runtime
+
+Runs on Google Cloud Run (made to run containers)
+
+## Database
+
+Google Firestore
+
+## Build
+
+Google Cloud Build monitors the Github repository and deploys automatically upon pushes to main

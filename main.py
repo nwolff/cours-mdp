@@ -1,4 +1,16 @@
-from flask import Flask, redirect, render_template, request
+import queue
+import threading
+
+import segno
+from flask import (
+    Flask,
+    Response,
+    redirect,
+    render_template,
+    request,
+    stream_with_context,
+)
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 import storage.firestore as storage
 from strategies import registry
@@ -7,6 +19,9 @@ MIN_CHARS = 3  # Both for the username and password
 
 app = Flask(__name__)
 app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 600
+# Cloud Run terminates TLS upstream and forwards as http; trust the X-Forwarded-*
+# headers so request.url reflects the scheme and host the client actually used.
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)
 
 
 @app.template_filter("pluralize")
@@ -21,7 +36,8 @@ def inject_min_chars():
 
 @app.route("/")
 def home():
-    return render_template("home.j2")
+    qr_svg = segno.make(request.url, error="L").svg_inline(scale=6, border=2)
+    return render_template("home.j2", qr_svg=qr_svg, qr_url=request.url)
 
 
 @app.route("/_delete")
@@ -33,6 +49,44 @@ def deleteusers():
 @app.route("/listusers")
 def listusers():
     return render_template("listusers.j2", users=storage.load_users())
+
+
+# Server-sent events: notify connected /listusers clients when Firestore data changes.
+_listeners: set[queue.Queue] = set()
+_listeners_lock = threading.Lock()
+
+
+def _on_users_changed() -> None:
+    with _listeners_lock:
+        for q in list(_listeners):
+            try:
+                q.put_nowait("changed")
+            except queue.Full:
+                pass
+
+
+storage.subscribe_to_changes(_on_users_changed)
+
+
+@app.route("/listusers/stream")
+def listusers_stream():
+    def gen():
+        q: queue.Queue = queue.Queue(maxsize=8)
+        with _listeners_lock:
+            _listeners.add(q)
+        try:
+            yield "retry: 5000\n\n"
+            while True:
+                try:
+                    msg = q.get(timeout=30)
+                    yield f"data: {msg}\n\n"
+                except queue.Empty:
+                    yield ": keepalive\n\n"
+        finally:
+            with _listeners_lock:
+                _listeners.discard(q)
+
+    return Response(stream_with_context(gen()), mimetype="text/event-stream")
 
 
 @app.route("/login", methods=["POST", "GET"])

@@ -4,26 +4,37 @@
 
 {% block nav_listusers %}active{% endblock %}
 
+{% block extrahead %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const es = new EventSource('/listusers/stream');
+  es.addEventListener('message', () => location.reload());
+});
+</script>
+{% endblock %}
+
 {% block content %}
 <h2>{{users|length}} Compte{{ users|length|pluralize }}</h2>
-<table class="table table-striped table-hover">
-  <thead>
-    <tr>
-      <th>Nom</th>
-      <th>Mot de passe encodé</th>
-      <th>Stratégie</th>
-      <th>Date et heure de création</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for user in users %}
-    <tr>
-      <td>{{user.username}}</td>
-      <td>{{user.password}}</td>
-      <td>{{user.strategy}}</td>
-      <td>{{user.timestamp}}</td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+<div class="table-responsive">
+  <table class="table table-striped table-hover">
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Mot de passe encodé</th>
+        <th>Stratégie</th>
+        <th>Date et heure de création</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in users %}
+      <tr>
+        <td>{{user.username}}</td>
+        <td>{{user.password}}</td>
+        <td>{{user.strategy}}</td>
+        <td>{{user.timestamp}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 {% endblock %}
