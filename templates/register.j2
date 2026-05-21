@@ -4,42 +4,42 @@
 
 {% block extrahead %}
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  const form = document.querySelector('form');
-  const btn = form.querySelector('[type=submit]');
-  const previewEl = document.getElementById('encoded-preview');
-  const emptyHTML = '<span class="text-muted fst-italic">(saisir un mot de passe et choisir une stratégie)</span>';
-  let timer;
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.querySelector('form');
+    const btn = form.querySelector('[type=submit]');
+    const previewEl = document.getElementById('encoded-preview');
+    const emptyHTML = '<span class="text-muted fst-italic">(saisir un mot de passe et choisir une stratégie)</span>';
+    let timer;
 
-  const updateBtn = () => btn.disabled = !form.checkValidity();
-  const renderEmpty = () => { previewEl.innerHTML = emptyHTML; };
+    const updateBtn = () => btn.disabled = !form.checkValidity();
+    const renderEmpty = () => { previewEl.innerHTML = emptyHTML; };
 
-  const updatePreview = () => {
-    clearTimeout(timer);
-    timer = setTimeout(async () => {
-      const password = form.querySelector('input[name=password]').value;
-      const strategyEl = form.querySelector('input[name=strategy_name]:checked');
-      if (!password || !strategyEl) { renderEmpty(); return; }
-      try {
-        const r = await fetch('/api/encode', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({password, strategy_name: strategyEl.value})
-        });
-        if (!r.ok) { renderEmpty(); return; }
-        const data = await r.json();
-        previewEl.textContent = data.encoded || '';
-      } catch {
-        renderEmpty();
-      }
-    }, 100);
-  };
+    const updatePreview = () => {
+      clearTimeout(timer);
+      timer = setTimeout(async () => {
+        const password = form.querySelector('input[name=password]').value;
+        const strategyEl = form.querySelector('input[name=strategy_name]:checked');
+        if (!password || !strategyEl) { renderEmpty(); return; }
+        try {
+          const r = await fetch('/api/encode', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ password, strategy_name: strategyEl.value })
+          });
+          if (!r.ok) { renderEmpty(); return; }
+          const data = await r.json();
+          previewEl.textContent = data.encoded || '';
+        } catch {
+          renderEmpty();
+        }
+      }, 100);
+    };
 
-  const onChange = () => { updateBtn(); updatePreview(); };
-  onChange();
-  form.addEventListener('input', onChange);
-  form.addEventListener('change', onChange);
-});
+    const onChange = () => { updateBtn(); updatePreview(); };
+    onChange();
+    form.addEventListener('input', onChange);
+    form.addEventListener('change', onChange);
+  });
 </script>
 {% endblock %}
 
@@ -56,14 +56,15 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="form-floating">
             <input type="text" id="username" placeholder="Nom" name="username" value="{{
             request.form.username }}" class="form-control" required minlength="{{min_chars}}" autofocus
-            autocapitalize="off" autocorrect="off" spellcheck="false" />
+              autocapitalize="off" autocorrect="off" spellcheck="false" />
             <label for="username">Nom</label>
           </div>
           <div class="form-text">Minimum {{min_chars}} caractères</div>
         </div>
         <div class="mb-3">
           <div class="form-floating">
-            <input type="password" id="password" placeholder="Mot de passe" name="password" class="form-control" required minlength="{{min_chars}}" />
+            <input type="password" id="password" placeholder="Mot de passe" name="password" class="form-control"
+              required minlength="{{min_chars}}" />
             <label for="password">Mot de passe</label>
           </div>
           <div class="form-text">Minimum {{min_chars}} caractères</div>
@@ -72,7 +73,8 @@ document.addEventListener('DOMContentLoaded', () => {
           <label class="form-label d-block">Stratégie</label>
           <div class="d-flex flex-wrap gap-2" role="group">
             {% for s_name in strategies.keys() %}
-            <input type="radio" class="btn-check" name="strategy_name" id="strategy_{{loop.index}}" value="{{s_name}}" autocomplete="off" required {% if request.form.strategy_name == s_name %}checked{% endif %}>
+            <input type="radio" class="btn-check" name="strategy_name" id="strategy_{{loop.index}}" value="{{s_name}}"
+              autocomplete="off" required {% if request.form.strategy_name==s_name %}checked{% endif %}>
             <label class="btn btn-outline-secondary" for="strategy_{{loop.index}}">{{s_name}}</label>
             {% endfor %}
           </div>
@@ -80,7 +82,8 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
         <div class="mb-3">
           <label class="form-label small text-muted mb-1">Aperçu du mot de passe encodé</label>
-          <code id="encoded-preview" class="d-block p-2 bg-light border rounded text-break" style="min-height: 2.4em"></code>
+          <code id="encoded-preview" class="d-block p-2 bg-light border rounded text-break"
+            style="min-height: 2.4em"></code>
         </div>
         <div class="d-grid">
           <button type="submit" class="btn btn-primary">Créer</button>

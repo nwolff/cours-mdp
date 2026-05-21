@@ -5,10 +5,8 @@
 {% block content %}
 <div class="card shadow mx-auto" style="max-width: 520px">
   <div class="card-body text-center p-4">
-    <img src="{{ user.username|avatar_url }}"
-         alt="Avatar de {{user.username}}"
-         class="rounded-circle border bg-light mb-3"
-         width="180" height="180" />
+    <img src="{{ user.username|avatar_url }}" alt="Avatar de {{user.username}}"
+      class="rounded-circle border bg-light mb-3" width="180" height="180" />
     <h2 class="card-title mb-1">{{user.username}}</h2>
     <p class="fst-italic mb-1">« {{user.username|totem}} »</p>
     <p class="text-muted small mb-4">Compte créé le {{user.timestamp|format_timestamp}}</p>
@@ -20,7 +18,4 @@
     </dl>
   </div>
 </div>
-<p class="text-center mt-3">
-  <a href="/" class="btn btn-link">Retour à l'accueil</a>
-</p>
 {% endblock %}

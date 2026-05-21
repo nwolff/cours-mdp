@@ -6,10 +6,10 @@
 
 {% block extrahead %}
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  const es = new EventSource('/listusers/stream');
-  es.addEventListener('message', () => location.reload());
-});
+  document.addEventListener('DOMContentLoaded', () => {
+    const es = new EventSource('/listusers/stream');
+    es.addEventListener('message', () => location.reload());
+  });
 </script>
 {% endblock %}
 
