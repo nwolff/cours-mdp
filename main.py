@@ -110,6 +110,16 @@ def listusers_stream():
     return Response(stream_with_context(gen()), mimetype="text/event-stream")
 
 
+@app.route("/api/encode", methods=["POST"])
+def api_encode():
+    data = request.get_json(silent=True) or {}
+    strategy = registry.get(data.get("strategy_name", ""))
+    if strategy is None:
+        return {"error": "Unknown strategy"}, 400
+    password = data.get("password", "")
+    return {"encoded": strategy.encode(password) if password else ""}
+
+
 @app.route("/login", methods=["POST", "GET"])
 def login():
     error = None
