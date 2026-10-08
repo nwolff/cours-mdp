@@ -1,0 +1,31 @@
+rules_version = '2';
+
+// The browser talks to Firestore directly, so these rules are the only gatekeeper.
+//
+// Open by design for the course:
+// - anyone can list all accounts (the "Liste des comptes" page shows stored passwords)
+// - registering an existing name overwrites that account (see CLAUDE.md)
+// - anyone can delete accounts (the /_delete page wipes the collection)
+//
+// What the rules do enforce is the shape of an account, so the collection only
+// ever holds documents the app can display.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{username} {
+      allow read: if true;
+      allow create, update: if isValidUser(username, request.resource.data);
+      allow delete: if true;
+    }
+  }
+
+  // The document id is the username, so it is not repeated inside the document.
+  function isValidUser(username, user) {
+    return user.keys().hasOnly(['password', 'strategy', 'createdAt'])
+      && user.keys().hasAll(['password', 'strategy', 'createdAt'])
+      && username.size() >= 3 && username.size() <= 100
+      && user.password is string && user.password.size() >= 3 && user.password.size() <= 200
+      && user.strategy in ['plaintext', 'rot13', 'md5', 'salted_md5']
+      // Only serverTimestamp() satisfies this: clients cannot backdate an account.
+      && user.createdAt == request.time;
+  }
+}

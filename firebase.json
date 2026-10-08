@@ -1,0 +1,3 @@
+{
+	"firestore": [{ "database": "cours-mdp", "rules": "firestore.rules" }]
+}
