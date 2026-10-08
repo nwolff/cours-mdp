@@ -1,0 +1,4 @@
+/* Shrink on phones so a full salted hash (39 chars) still fits on one line */
+.encoded {
+	font-size: clamp(0.7rem, 3.3vw, 0.875rem);
+}

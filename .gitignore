@@ -1,15 +1,9 @@
-# All types of virtualenvs
-.direnv/
-.venv/
-.env/
+node_modules/
+dist/
 
-# sqlite databases
-*.db
-
-# Always
-__pycache__/
-.mypy_cache/
-.ruff_cache/
+# Firebase CLI
+.firebase/
+*-debug.log
 
 # IDEs
 .vscode/
@@ -18,3 +12,5 @@ __pycache__/
 # Mac
 .DS_Store
 
+# Because we sometimes switch to the elm branch
+elm-stuff/

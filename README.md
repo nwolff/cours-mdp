@@ -2,58 +2,51 @@
 
 https://mdp.nwolff.info/
 
-Est un alias pour :
+Students create accounts with different password strategies (plaintext → rot13 → md5 →
+salted_md5) and compare what ends up stored.
 
-https://cours-mdp-5563464620.europe-west1.run.app/
+A static [Solid](https://www.solidjs.com/) + TypeScript app, hosted on GitHub Pages. The
+browser reads and writes [Cloud Firestore](https://firebase.google.com/docs/firestore)
+directly: there is no server.
 
-# Developing Locally
+## Pages
 
-The project uses [uv](https://docs.astral.sh/uv/) to manage Python and dependencies.
+- **`/#/register`**: create an account. Re-registering an existing name overwrites it (see
+  [CLAUDE.md](CLAUDE.md)). Shows a live preview of the encoded password.
+- **`/#/login`**: compares the encoded attempt with the stored password.
+- **`/#/listusers`**: every stored account, updated live via Firestore's `onSnapshot`.
+- **`/#/_delete`**: unlisted; deletes every account, then shows the (empty) list.
 
-## Install dependencies
+Hashing and the login check run in the browser. That is fine for this demo, and a good
+discussion point: in a real application, they must happen on a server.
 
-    uv sync
+## Developing locally
 
-This creates `.venv/` and installs runtime + dev dependencies pinned in `uv.lock`.
+    npm install
+    npm run dev        # http://localhost:5173
+    npm test           # strategies and totem
+    npm run check      # type-check
+    npm run format     # prettier
 
-## Run the app
+The dev server talks to the production Firestore database.
 
-    uv run python main.py
+## Firebase
 
-Then open <http://localhost:8080/>. The Flask dev server reloads on file changes.
+- Project `cours-mdp-407714`, Firestore database `cours-mdp`, collection `users`
+  (document id = username; fields `password`, `strategy`, `createdAt`).
+- The web config in [src/firebase.ts](src/firebase.ts) contains public client identifiers,
+  not secrets.
+- Since the browser talks to Firestore directly, [firestore.rules](firestore.rules) are the
+  only gatekeeper. They are open by design for the course, but enforce the shape of an
+  account. Deploy them after changing them:
 
-## Run the tests
+        npx firebase-tools login
+        npx firebase-tools deploy --only firestore:rules
 
-    uv run pytest
+## Deployment
 
-## Database
+Pushing to `main` triggers [.github/workflows/deploy.yml](.github/workflows/deploy.yml),
+which type-checks, tests, builds and publishes to GitHub Pages.
 
-Either import storage.sqlite instead of storage.firestore
-
-Or configure credentials on your local machine to connect to firestore :
-
-    gcloud config set project cours-mdp-407714
-    gcloud auth application-default login
-
-Ref: https://cloud.google.com/docs/authentication/provide-credentials-adc#local-dev
-
-## Tooling
-
-To edit templates in vs-code:
-
-- install better-jinja
-- configure "associations" settings, .j2 should be mapped to jinja-html
-
-# In production
-
-## Runtime
-
-Runs on Google Cloud Run (made to run containers)
-
-## Database
-
-Google Firestore
-
-## Build
-
-Google Cloud Build monitors the Github repository and deploys automatically upon pushes to main
+One-time setup on GitHub: **Settings → Pages → Build and deployment → Source: GitHub
+Actions**, and **Custom domain: mdp.nwolff.info**.

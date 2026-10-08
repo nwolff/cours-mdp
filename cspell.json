@@ -1,27 +1,20 @@
 {
-  "version": "0.2",
-  "language": "en,fr",
-  "words": [
-    "alice",
-    "deleteusers",
-    "firestore",
-    "gunicorn",
-    "haveibeenpwned",
-    "keepalive",
-    "knative",
-    "listusers",
-    "md5decrypt",
-    "minlength",
-    "mypy",
-    "nwolff",
-    "pluralize",
-    "pwned",
-    "pyproject",
-    "pytest",
-    "ruff",
-    "segno",
-    "userinfo",
-    "venv",
-    "werkzeug"
-  ]
+	"version": "0.2",
+	"language": "en,fr",
+	"words": [
+		"alice",
+		"dicebear",
+		"firebaserc",
+		"firestore",
+		"haveibeenpwned",
+		"listusers",
+		"md5decrypt",
+		"nwolff",
+		"pluralize",
+		"pwned",
+		"rolldown",
+		"solidjs",
+		"uqr",
+		"userinfo"
+	]
 }
