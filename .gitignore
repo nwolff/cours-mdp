@@ -12,5 +12,5 @@ dist/
 # Mac
 .DS_Store
 
-# Because we sometimes switch to the elm branch
+# Elm
 elm-stuff/

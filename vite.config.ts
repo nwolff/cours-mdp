@@ -1,11 +1,11 @@
-import { defineConfig } from 'vitest/config';
-import solid from 'vite-plugin-solid';
+import { defineConfig } from 'vite';
+import elm from 'vite-plugin-elm';
 
 export default defineConfig({
 	// Relative asset URLs: the same build works under nwolff.github.io/cours-mdp/
-	// and on a custom domain. Hash routing (see src/index.tsx) makes this possible.
+	// and on a custom domain. Hash routing (see src/Route.elm) makes this possible.
 	base: './',
-	plugins: [solid()],
+	plugins: [elm()],
 	build: {
 		rolldownOptions: {
 			output: {
@@ -16,9 +16,5 @@ export default defineConfig({
 				}
 			}
 		}
-	},
-	test: {
-		// The tests cover plain TypeScript modules, not components: no DOM needed.
-		environment: 'node'
 	}
 });

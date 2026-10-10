@@ -5,9 +5,15 @@ https://mdp.nwolff.info/
 Students create accounts with different password strategies (plaintext → rot13 → md5 →
 salted_md5) and compare what ends up stored.
 
-A static [Solid](https://www.solidjs.com/) + TypeScript app, hosted on GitHub Pages. The
-browser reads and writes [Cloud Firestore](https://firebase.google.com/docs/firestore)
-directly: there is no server.
+A static [Elm](https://elm-lang.org/) app, hosted on GitHub Pages. The browser reads and
+writes [Cloud Firestore](https://firebase.google.com/docs/firestore) directly: there is no
+server.
+
+Elm has no Firestore SDK, so Firestore stays in TypeScript ([src/storage.ts](src/storage.ts)).
+[src/main.ts](src/main.ts) connects it to the ports declared in [src/Ports.elm](src/Ports.elm);
+everything else (pages, routing, password strategies) is Elm, starting at
+[src/Main.elm](src/Main.elm).
+See [ELM.md](ELM.md) for how the two halves fit together.
 
 ## Pages
 
@@ -24,9 +30,12 @@ discussion point: in a real application, they must happen on a server.
 
     npm install
     npm run dev        # http://localhost:5173
-    npm test           # strategies and totem
-    npm run check      # type-check
-    npm run format     # prettier
+    npm test           # elm-test: strategies and totem
+    npm run check      # type-check the TypeScript
+    npm run format     # prettier and elm-format
+
+The Elm compiler, elm-test and elm-format come from `npm install` (see package.json), so no
+global Elm install is needed.
 
 The dev server talks to the production Firestore database.
 

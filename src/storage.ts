@@ -14,19 +14,19 @@ import {
 } from 'firebase/firestore';
 
 import { db } from './firebase';
-import type { StrategyName } from './strategies';
 
 export interface User {
 	username: string;
 	password: string;
-	strategy: StrategyName;
+	/** A strategy name from src/Strategy.elm (firestore.rules lists the valid ones). */
+	strategy: string;
 	createdAt: Date;
 }
 
 /** One document in the `users` collection, whose id is the username. */
 interface StoredUser {
 	password: string;
-	strategy: StrategyName;
+	strategy: string;
 	/** Set by Firestore when the document is written (checked by firestore.rules). */
 	createdAt: Timestamp;
 }
@@ -54,7 +54,7 @@ export async function userForName(username: string): Promise<User | null> {
 export async function createOrUpdateUser(
 	username: string,
 	encodedPassword: string,
-	strategy: StrategyName
+	strategy: string
 ): Promise<User> {
 	const ref = doc(users, username);
 	await setDoc(ref, { password: encodedPassword, strategy, createdAt: serverTimestamp() });
