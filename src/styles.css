@@ -2,3 +2,10 @@
 .encoded {
 	font-size: clamp(0.7rem, 3.3vw, 0.875rem);
 }
+
+/* uqr's SVG has a viewBox but no width: inside an inline-block it collapses to nothing */
+.qr-code svg {
+	display: block;
+	width: 12rem;
+	height: auto;
+}

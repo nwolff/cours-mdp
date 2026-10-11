@@ -16,6 +16,7 @@ directly: there is no server.
 - **`/#/login`**: compares the encoded attempt with the stored password.
 - **`/#/listusers`**: every stored account, updated live via Firestore's `onSnapshot`.
 - **`/#/_delete`**: unlisted; deletes every account, then shows the (empty) list.
+- **`/#/about`**: unlisted; build date, repository and commit hash of the deployed build.
 
 Hashing and the login check run in the browser. That is fine for this demo, and a good
 discussion point: in a real application, they must happen on a server.

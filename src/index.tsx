@@ -5,6 +5,7 @@ import { HashRouter, Navigate, Route } from '@solidjs/router';
 import { render } from 'solid-js/web';
 
 import Layout from './Layout';
+import About from './pages/About';
 import Account from './pages/Account';
 import DeleteAll from './pages/DeleteAll';
 import Home from './pages/Home';
@@ -23,6 +24,7 @@ render(
 			<Route path={['/register/done', '/login/done']} component={Account} />
 			<Route path="/listusers" component={ListUsers} />
 			<Route path="/_delete" component={DeleteAll} />
+			<Route path="/about" component={About} />
 			<Route path="*" component={() => <Navigate href="/" />} />
 		</HashRouter>
 	),
